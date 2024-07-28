@@ -32,7 +32,6 @@ async function checkVisisted() {
 app.get("/", async (req, res) => {
   const countries = await checkVisisted();
   users=await db.query("select * from users");
-  //console.log(currUser);
   const colourful=await db.query("select color from users where id=$1",[currUser]);
   res.render("index.ejs", {
     countries: countries,
@@ -49,8 +48,6 @@ app.post("/add", async (req, res) => {
       "SELECT country_code FROM countries WHERE LOWER(country_name)=$1",
       [input.toLowerCase()]
     );
-    //console.log(result.rows);
-    //console.log(typeof(result.rows[0].country_code));
     if(result.rows.length==0){
       res.redirect("/");
     }
@@ -100,9 +97,6 @@ app.post("/user", async (req, res) => {
 });
 
 app.post("/new", async (req, res) => {
-  //Hint: The RETURNING keyword can return the data that was inserted.
-  //https://www.postgresql.org/docs/current/dml-returning.html
-    //console.log(req.body);
     db.query("insert into users(user_name, color) values ($1,$2)",[req.body.name, req.body.color]);
     res.redirect("/");
 
